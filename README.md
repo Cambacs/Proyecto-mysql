@@ -1,3 +1,18 @@
+Como hacer andar:
+1-
+Hacer andar MySQL local (XAMPP o otro)
+
+2-
+en un command prompt:
+
+cd "C:proyecto\filess"
+node seed.js
+node server.js
+
+3-
+Entrar al localhost:3000
+
+
 # Penca Mundial 2026 – Full Stack
 
 Frontend HTML/JS + Backend Node.js/Express + Base de datos MySQL
