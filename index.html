@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penca Mundial 2026</title>
+<style>
+:root{
+  --dorado:#D4AF37;--dorado-c:#F0D060;--bg:#0a0a0a;
+  --card:rgba(0,0,0,0.88);--border:rgba(212,175,55,0.35);
+  --txt:#e8e8e8;--muted:#999;--verde:#2ecc71;--rojo:#e74c3c;--azul:#3498db;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Trebuchet MS',sans-serif;color:var(--txt);background:var(--bg);min-height:100vh;}
+.pant{display:none;min-height:100vh;flex-direction:column;}
+.pant.on{display:flex;}
+#login{background:linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=2070') center/cover fixed;align-items:center;justify-content:center;}
+.lbox{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:48px 38px;width:100%;max-width:420px;text-align:center;}
+.lbox img{width:105px;margin-bottom:16px;filter:drop-shadow(0 0 10px rgba(212,175,55,.5));}
+.lbox h1{color:var(--dorado);font-size:1.75rem;margin-bottom:5px;}
+.lbox p{color:var(--muted);font-size:.84rem;margin-bottom:26px;}
+.fg{margin-bottom:13px;text-align:left;}
+.fg label{font-size:.79rem;color:var(--muted);display:block;margin-bottom:4px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px 13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:var(--txt);font-size:.95rem;}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--dorado);}
+.btn{padding:11px 30px;background:var(--dorado);color:#000;font-weight:bold;border:none;border-radius:8px;cursor:pointer;font-size:.95rem;transition:all .2s;width:100%;margin-top:7px;display:inline-block;}
+.btn:hover{background:var(--dorado-c);}
+.btn-g{background:transparent;border:1px solid var(--dorado);color:var(--dorado);}
+.btn-g:hover{background:rgba(212,175,55,.1);}
+.btn-r{background:var(--rojo);color:#fff;}
+.btn-r:hover{background:#c0392b;}
+.btn-s{padding:6px 14px;font-size:.82rem;width:auto;margin-top:0;}
+nav{background:rgba(0,0,0,.95);border-bottom:2px solid var(--dorado);padding:0 18px;display:flex;align-items:center;justify-content:space-between;min-height:52px;position:sticky;top:0;z-index:1000;flex-wrap:wrap;gap:4px;}
+.brand{display:flex;align-items:center;gap:8px;color:var(--dorado);font-weight:bold;font-size:.95rem;}
+.brand img{width:32px;}
+.nlinks{display:flex;gap:2px;flex-wrap:wrap;}
+.nlinks a{color:var(--muted);font-size:.76rem;font-weight:bold;text-transform:uppercase;padding:6px 10px;border-radius:6px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.nlinks a:hover,.nlinks a.on{background:var(--dorado);color:#000;}
+.nuser{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted);}
+.brol{background:rgba(212,175,55,.2);border:1px solid var(--dorado);color:var(--dorado);padding:2px 7px;border-radius:20px;font-size:.7rem;font-weight:bold;}
+.brol.adm{background:rgba(231,76,60,.2);border-color:var(--rojo);color:var(--rojo);}
+.mc{flex:1;padding:24px 20px;max-width:1100px;margin:0 auto;width:100%;}
+.ptit{font-size:1.55rem;color:var(--dorado);margin-bottom:4px;font-weight:bold;}
+.psub{font-size:.86rem;color:var(--muted);margin-bottom:20px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:20px;margin-bottom:13px;}
+.ctit{font-size:.97rem;font-weight:bold;color:var(--dorado);margin-bottom:12px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media(max-width:680px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.sbox{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:14px;text-align:center;}
+.snum{font-size:2rem;font-weight:bold;color:var(--dorado);line-height:1;}
+.slbl{font-size:.74rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.04em;}
+table{width:100%;border-collapse:collapse;}
+th{background:rgba(212,175,55,.15);color:var(--dorado);font-size:.75rem;text-transform:uppercase;padding:9px 11px;text-align:left;border-bottom:1px solid var(--border);}
+td{padding:9px 11px;font-size:.88rem;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;}
+tr:hover td{background:rgba(255,255,255,.03);}
+.r1 td{color:var(--dorado);font-weight:bold;}
+.r2 td{color:#C0C0C0;}
+.r3 td{color:#CD7F32;}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:10px;}
+.pc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-left:4px solid var(--dorado);border-radius:9px;padding:13px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:8px;}
+.pc:hover{background:rgba(255,255,255,.1);transform:translateY(-2px);}
+.pc.bloq{border-left-color:#555;cursor:default;opacity:.7;}
+.pc.pred{border-left-color:var(--verde);}
+.peq{display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.ei{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:.85rem;}
+.ei img{width:27px;border-radius:3px;}
+.pmeta{font-size:.72rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center;}
+.fase-tabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.fase-tab{padding:5px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;font-size:.78rem;cursor:pointer;transition:all .2s;color:var(--muted);}
+.fase-tab:hover,.fase-tab.on{background:var(--dorado);color:#000;border-color:var(--dorado);font-weight:bold;}
+.gtabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.gt{padding:4px 11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;font-size:.76rem;cursor:pointer;transition:all .2s;color:var(--muted);}
+.gt:hover,.gt.on{background:var(--dorado);color:#000;border-color:var(--dorado);font-weight:bold;}
+.bcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.bi{font-size:1.8rem;}
+.binfo{flex:1;}
+.btit{font-weight:bold;margin-bottom:3px;}
+.bpts{color:var(--dorado);font-size:.83rem;}
+.binput{width:170px;padding:7px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:7px;color:var(--txt);font-size:.88rem;}
+.binput:focus{outline:none;border-color:var(--dorado);}
+.toast{position:fixed;bottom:20px;right:20px;background:#1a1a1a;border:1px solid var(--dorado);border-radius:9px;padding:12px 17px;font-size:.88rem;color:var(--txt);z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s;max-width:300px;}
+.toast.on{transform:translateY(0);opacity:1;}
+.toast.err{border-color:var(--rojo);}
+.mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;align-items:center;justify-content:center;}
+.mov.on{display:flex;}
+.modal{background:#111;border:1px solid var(--border);border-radius:15px;padding:28px;width:100%;max-width:440px;text-align:center;}
+.modal h2{color:var(--dorado);margin-bottom:6px;}
+.modal p{color:var(--muted);font-size:.88rem;margin-bottom:13px;}
+.meq{display:flex;justify-content:center;align-items:center;gap:16px;margin:13px 0;}
+.meq-item{text-align:center;}
+.meq-item img{width:70px;border-radius:7px;margin-bottom:6px;display:block;margin-left:auto;margin-right:auto;}
+.meq-item span{display:block;font-weight:bold;font-size:.86rem;}
+.minp-wrap{display:flex;justify-content:center;align-items:center;gap:9px;margin:13px 0;}
+.minp{width:62px;padding:9px;font-size:1.8rem;font-weight:bold;text-align:center;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2);border-radius:9px;color:var(--txt);}
+.minp:focus{outline:none;border-color:var(--dorado);}
+.msep{font-size:1.8rem;color:var(--muted);}
+.mbtns{display:flex;gap:8px;margin-top:13px;}
+.mbtns .btn{margin-top:0;}
+.best{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.69rem;font-weight:bold;}
+.bpend{background:rgba(52,152,219,.2);color:var(--azul);border:1px solid var(--azul);}
+.bfin{background:rgba(46,204,113,.2);color:var(--verde);border:1px solid var(--verde);}
+.pex{color:var(--verde);font-weight:bold;}
+.pgan{color:var(--dorado);font-weight:bold;}
+.perr{color:var(--rojo);}
+footer{background:#000;border-top:1px solid rgba(212,175,55,.2);padding:16px;text-align:center;color:var(--muted);font-size:.78rem;}
+.historial-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.85rem;}
+.fase-badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.68rem;font-weight:bold;background:rgba(52,152,219,.2);color:var(--azul);border:1px solid var(--azul);margin-left:5px;}
+.loading{color:var(--muted);padding:40px;text-align:center;font-size:.9rem;}
+.elim-partido{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:13px;margin-bottom:8px;}
+.elim-partido h4{font-size:.82rem;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em;}
+.elim-select{width:100%;padding:8px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:7px;color:var(--txt);font-size:.88rem;margin-bottom:6px;}
+.elim-select:focus{outline:none;border-color:var(--dorado);}
+.progress-bar{background:rgba(255,255,255,.08);border-radius:20px;height:6px;overflow:hidden;margin-top:4px;}
+.progress-fill{background:var(--dorado);height:100%;border-radius:20px;transition:width .3s;}
+.desglose-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.85rem;}
+.user-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.user-nombre{font-weight:bold;font-size:.9rem;}
+.user-alias{font-size:.78rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="pant on">
+  <div class="lbox">
+    <img src="https://football-logos.cc/uploads/tournaments/fifa-world-cup-2026/fifa-world-cup-2026-white.png" alt="WC26">
+    <h1>Penca Mundial 2026</h1>
+    <p>Ingresa con tu alias para continuar</p>
+    <div class="fg"><label>Alias</label><input type="text" id="l-alias" placeholder="Tu alias..."></div>
+    <div class="fg"><label>Contraseña</label><input type="password" id="l-pass" placeholder="......"></div>
+    <button class="btn" id="btn-login">Ingresar</button>
+  </div>
+</div>
+
+<!-- APP JUGADOR -->
+<div id="app-j" class="pant">
+  <nav>
+    <div class="brand"><img src="https://football-logos.cc/uploads/tournaments/fifa-world-cup-2026/fifa-world-cup-2026-white.png" alt="">Penca Mundial 2026</div>
+    <div class="nlinks">
+      <a data-vista="dash">Dashboard</a>
+      <a data-vista="pred">Predicciones</a>
+      <a data-vista="historial">Mi historial</a>
+      <a data-vista="pos">Posiciones</a>
+      <a data-vista="bonus">Bonus</a>
+    </div>
+    <div class="nuser"><span id="j-nombre"></span><span class="brol">JUGADOR</span><button class="btn btn-g btn-s" id="btn-salir-j">Salir</button></div>
+  </nav>
+  <div id="v-dash"      class="mc" style="display:none"></div>
+  <div id="v-pred"      class="mc" style="display:none"></div>
+  <div id="v-historial" class="mc" style="display:none"></div>
+  <div id="v-pos"       class="mc" style="display:none"></div>
+  <div id="v-bonus"     class="mc" style="display:none"></div>
+  <footer>Penca Mundial 2026 · UCU · 2026</footer>
+</div>
+
+<!-- APP ADMIN -->
+<div id="app-a" class="pant">
+  <nav>
+    <div class="brand"><img src="https://football-logos.cc/uploads/tournaments/fifa-world-cup-2026/fifa-world-cup-2026-white.png" alt="">Penca Mundial 2026</div>
+    <div class="nlinks">
+      <a data-avista="ares">Resultados</a>
+      <a data-avista="aelim">Eliminatorias</a>
+      <a data-avista="abon">Bonus</a>
+      <a data-avista="apos">Posiciones</a>
+      <a data-avista="ausr">Participantes</a>
+      <a data-avista="astat">Estado general</a>
+    </div>
+    <div class="nuser"><span id="a-nombre"></span><span class="brol adm">ADMIN</span><button class="btn btn-g btn-s" id="btn-salir-a">Salir</button></div>
+  </nav>
+  <div id="v-ares"  class="mc" style="display:none"></div>
+  <div id="v-aelim" class="mc" style="display:none"></div>
+  <div id="v-abon"  class="mc" style="display:none"></div>
+  <div id="v-apos"  class="mc" style="display:none"></div>
+  <div id="v-ausr"  class="mc" style="display:none"></div>
+  <div id="v-astat" class="mc" style="display:none"></div>
+  <footer>Penca Mundial 2026 · Panel Admin · 2026</footer>
+</div>
+
+<!-- MODAL PREDICCION -->
+<div class="mov" id="modal">
+  <div class="modal">
+    <h2 id="m-tit"></h2>
+    <p id="m-fecha"></p>
+    <div class="meq">
+      <div class="meq-item"><img id="m-fl" src="" alt=""><span id="m-local"></span></div>
+      <div class="minp-wrap">
+        <input type="number" class="minp" id="m-gl" min="0" max="20" value="0">
+        <span class="msep">-</span>
+        <input type="number" class="minp" id="m-gv" min="0" max="20" value="0">
+      </div>
+      <div class="meq-item"><img id="m-fv" src="" alt=""><span id="m-visita"></span></div>
+    </div>
+    <div class="mbtns">
+      <button class="btn btn-g" id="btn-cancelar">Cancelar</button>
+      <button class="btn" id="btn-guardar">Guardar predicción</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO USUARIO -->
+<div class="mov" id="modal-usr">
+  <div class="modal" style="text-align:left">
+    <h2 style="color:var(--dorado);margin-bottom:16px">Agregar participante</h2>
+    <div class="fg"><label>Nombre completo</label><input type="text" id="nu-nombre" placeholder="Nombre..."></div>
+    <div class="fg"><label>Alias</label><input type="text" id="nu-alias" placeholder="Alias único..."></div>
+    <div class="fg"><label>Contraseña</label><input type="password" id="nu-pass" placeholder="Contraseña..."></div>
+    <div class="mbtns" style="margin-top:16px">
+      <button class="btn btn-g" id="btn-cancelar-usr">Cancelar</button>
+      <button class="btn" id="btn-guardar-usr">Agregar participante</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────
+const API = ''; // misma origin; si backend está en otro puerto usar 'http://localhost:3000'
+
+const FASES_CONFIG = {
+  'Grupos':      {ex:3,  gan:1},
+  'Ronda de 32': {ex:6,  gan:2},
+  'Octavos':     {ex:9,  gan:3},
+  'Cuartos':     {ex:12, gan:4},
+  'Semifinales': {ex:15, gan:5},
+  'Final':       {ex:18, gan:6}
+};
+
+const BONUS_ITEMS = [
+  {k:'campeon',  t:'Campeón del mundo',             pts:15, icon:'🏆'},
+  {k:'sub',      t:'Subcampeón',                    pts:8,  icon:'🥈'},
+  {k:'goleador', t:'Goleador del torneo',           pts:8,  icon:'⚽'},
+  {k:'arquero',  t:'Mejor arquero (Guante de Oro)', pts:5,  icon:'🧤'}
+];
+
+const GRUPOS = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+
+// ── ESTADO ────────────────────────────────────────────────────
+let sesion = null;
+let fixture = [];
+let grupoActivo = 'A', faseActiva = 'Grupos';
+let partidoActivo = null;
+
+// ── API HELPER ────────────────────────────────────────────────
+async function api(method, url, body) {
+  const opts = { method, credentials: 'include', headers: {} };
+  if (body) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+  const r = await fetch(API + url, opts);
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error || 'Error');
+  return data;
+}
+
+// ── UTILS ─────────────────────────────────────────────────────
+function flag(c) { return 'https://flagcdn.com/w40/' + c + '.png'; }
+function flagBig(c) { return 'https://flagcdn.com/w160/' + c + '.png'; }
+
+function toast(msg, tipo) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast on' + (tipo === 'err' ? ' err' : '');
+  clearTimeout(t._t); t._t = setTimeout(() => t.className = 'toast', 3000);
+}
+
+function showPant(id) {
+  ['login','app-j','app-a'].forEach(p => document.getElementById(p).classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+function calcPts(pred, realL, realV, fase) {
+  if (realL === null || realL === undefined) return null;
+  if (!pred) return 0;
+  const f = FASES_CONFIG[fase] || FASES_CONFIG['Grupos'];
+  const gl = parseInt(pred.gl ?? pred.goles_l), gv = parseInt(pred.gv ?? pred.goles_v);
+  if (gl === realL && gv === realV) return f.ex;
+  if ((gl>gv&&realL>realV)||(gl<gv&&realL<realV)||(gl===gv&&realL===realV)) return f.gan;
+  return 0;
+}
+
+// ── NAVEGACIÓN ────────────────────────────────────────────────
+function showVistaJ(v) {
+  ['dash','pred','historial','pos','bonus'].forEach(n => {
+    document.getElementById('v-'+n).style.display = 'none';
+    document.querySelector(`#app-j [data-vista="${n}"]`)?.classList.remove('on');
+  });
+  document.getElementById('v-'+v).style.display = 'block';
+  document.querySelector(`#app-j [data-vista="${v}"]`)?.classList.add('on');
+  if(v==='dash')      renderDash();
+  if(v==='pred')      renderPred();
+  if(v==='historial') renderHistorial();
+  if(v==='pos')       renderPos();
+  if(v==='bonus')     renderBonus();
+}
+
+function showVistaA(v) {
+  ['ares','aelim','abon','apos','ausr','astat'].forEach(n => {
+    document.getElementById('v-'+n).style.display = 'none';
+    document.querySelector(`#app-a [data-avista="${n}"]`)?.classList.remove('on');
+  });
+  document.getElementById('v-'+v).style.display = 'block';
+  document.querySelector(`#app-a [data-avista="${v}"]`)?.classList.add('on');
+  if(v==='ares')  renderARes();
+  if(v==='aelim') renderAElim();
+  if(v==='abon')  renderABon();
+  if(v==='apos')  renderAPos();
+  if(v==='ausr')  renderAUsr();
+  if(v==='astat') renderAStat();
+}
+
+// ── LOGIN ─────────────────────────────────────────────────────
+async function doLogin() {
+  const alias = document.getElementById('l-alias').value.trim();
+  const password = document.getElementById('l-pass').value;
+  try {
+    const u = await api('POST', '/api/auth/login', { alias, password });
+    sesion = u;
+    fixture = await api('GET', '/api/fixture');
+    if (u.rol === 'A') {
+      document.getElementById('a-nombre').textContent = u.nombre;
+      showPant('app-a'); showVistaA('ares');
+    } else {
+      document.getElementById('j-nombre').textContent = u.nombre;
+      showPant('app-j'); showVistaJ('dash');
+    }
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+async function doLogout() {
+  await api('POST', '/api/auth/logout');
+  sesion = null; fixture = [];
+  document.getElementById('l-alias').value = '';
+  document.getElementById('l-pass').value = '';
+  showPant('login');
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────
+async function renderDash() {
+  document.getElementById('v-dash').innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    const [ranking, hist] = await Promise.all([
+      api('GET', '/api/ranking'),
+      api('GET', '/api/historial/' + sesion.id)
+    ]);
+    const me = ranking.find(r => r.id === sesion.id) || {};
+    const pos = ranking.findIndex(r => r.id === sesion.id) + 1;
+    const jugados = fixture.filter(f => f.estado === 'FINALIZADO').length;
+    const prox = fixture.find(f => f.estado === 'PENDIENTE' && f.local !== 'A definir');
+
+    let proxH = '';
+    if (prox) {
+      proxH = `<div style="background:rgba(212,175,55,.1);border:1px solid var(--border);border-radius:9px;padding:12px 16px;margin-bottom:13px;display:flex;align-items:center;gap:10px;font-size:.88rem;">
+        ⏰ <div><div style="font-size:.8rem;color:var(--muted)">Próximo partido disponible</div>
+        <div style="font-weight:bold">${prox.local} vs ${prox.visita}</div></div>
+        <button class="btn btn-s" style="margin-left:auto" onclick="showVistaJ('pred')">Predecir</button></div>`;
+    }
+
+    const rnkH = ranking.map((r,i) => {
+      const cls = i===0?'r1':i===1?'r2':i===2?'r3':'';
+      const vos = r.id === sesion.id ? ' <span style="color:var(--dorado);font-size:.72rem">(vos)</span>' : '';
+      return `<tr class="${cls}"><td style="font-weight:bold">${i+1}</td><td>${r.nombre}${vos}</td><td style="color:var(--dorado);font-weight:bold">${r.pts}</td></tr>`;
+    }).join('');
+
+    const ultH = hist.slice(-4).reverse().map(p => {
+      const pr = p.pred_l !== null ? {gl: p.pred_l, gv: p.pred_v} : null;
+      const pts = calcPts(pr, p.real_l, p.real_v, p.fase);
+      const cls = pts === null ? '' : pts > 1 ? 'pex' : pts === 1 ? 'pgan' : 'perr';
+      return `<div class="historial-row">
+        <span>${p.local} vs ${p.visita}<span class="fase-badge">${p.fase}</span></span>
+        <span style="color:var(--muted);font-size:.78rem">${pr ? pr.gl+'-'+pr.gv : 'sin pred'} → ${p.real_l}-${p.real_v}</span>
+        <span class="${cls}">${pts === null ? '-' : pts+' pts'}</span></div>`;
+    }).join('') || '<p style="color:var(--muted);font-size:.84rem">Sin resultados aún.</p>';
+
+    document.getElementById('v-dash').innerHTML = `
+      <div class="ptit">Bienvenido, ${sesion.nombre.split(' ')[0]}</div>
+      <div class="psub">Estado de tu penca</div>
+      ${proxH}
+      <div class="g4" style="margin-bottom:13px">
+        <div class="sbox"><div class="snum">${me.pts_pred||0}</div><div class="slbl">Ptos predicciones</div></div>
+        <div class="sbox"><div class="snum">${me.pts_bonus||0}</div><div class="slbl">Ptos bonus</div></div>
+        <div class="sbox"><div class="snum">${me.pts||0}</div><div class="slbl">Total</div></div>
+        <div class="sbox"><div class="snum">${pos}°</div><div class="slbl">Mi posición</div></div>
+      </div>
+      <div class="g2">
+        <div class="card"><div class="ctit">🏆 Ranking</div>
+          <table><thead><tr><th>Pos</th><th>Jugador</th><th>Pts</th></tr></thead><tbody>${rnkH}</tbody></table>
+          <button class="btn btn-g btn-s" style="margin-top:12px" onclick="showVistaJ('pos')">Ver ranking completo</button></div>
+        <div>
+          <div class="card" style="margin-bottom:13px"><div class="ctit">📊 Mis stats</div>
+            <div class="g2">
+              <div class="sbox"><div class="snum">${me.exactos||0}</div><div class="slbl">Exactos</div></div>
+              <div class="sbox"><div class="snum">${jugados}</div><div class="slbl">Jugados</div></div>
+            </div></div>
+          <div class="card"><div class="ctit">📋 Últimos resultados</div>${ultH}
+            <button class="btn btn-g btn-s" style="margin-top:12px" onclick="showVistaJ('historial')">Ver historial completo</button></div>
+        </div>
+      </div>`;
+  } catch(e) { document.getElementById('v-dash').innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+// ── PREDICCIONES ─────────────────────────────────────────────
+async function renderPred() {
+  const el = document.getElementById('v-pred');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    fixture = await api('GET', '/api/fixture');
+    const fasesDisp = ['Grupos','Ronda de 32','Octavos','Cuartos','Semifinales','Final'];
+    const faseTabs = fasesDisp.map(f =>
+      `<div class="fase-tab${f===faseActiva?' on':''}" data-fase="${f}">${f}</div>`).join('');
+
+    let grupoTabsH = '';
+    if (faseActiva === 'Grupos') {
+      grupoTabsH = `<div class="gtabs">${GRUPOS.map(l =>
+        `<div class="gt${l===grupoActivo?' on':''}" data-grupo="${l}">${l}</div>`).join('')}</div>`;
+    }
+
+    const partidos = fixture.filter(p => {
+      if (p.fase !== faseActiva) return false;
+      if (faseActiva === 'Grupos') return p.grupo === grupoActivo;
+      return true;
+    });
+
+    const cards = partidos.map(p => {
+      const pr = p.miPred;
+      const bloq = p.estado === 'FINALIZADO';
+      const noDisp = p.local === 'A definir';
+      const pts = calcPts(pr, p.real_l, p.real_v, p.fase);
+      const ptsH = bloq && pr
+        ? (pts>1 ? `<span class="pex">+${pts} pts</span>` : pts===1 ? `<span class="pgan">+1 pt</span>` : `<span class="perr">0 pts</span>`)
+        : '';
+      const info = pr
+        ? `<div style="font-size:.78rem;color:var(--muted)">Tu pred: <strong>${pr.gl !== undefined ? pr.gl : pr.goles_l}-${pr.gv !== undefined ? pr.gv : pr.goles_v}</strong>${bloq&&p.real_l!==null?` → Real: <strong>${p.real_l}-${p.real_v}</strong>`:''} <span style="float:right">${ptsH}</span></div>`
+        : (bloq ? `<div style="font-size:.78rem;color:var(--rojo)">Sin predicción</div>`
+            : noDisp ? `<div style="font-size:.78rem;color:var(--muted)">Equipos por definir</div>`
+            : `<div style="font-size:.78rem;color:var(--dorado)">Clic para predecir</div>`);
+      const hasPred = !!pr;
+      return `<div class="pc${bloq?' bloq':''}${hasPred?' pred':''}" data-pid="${(!bloq&&!noDisp)?p.id:''}">
+        <div class="peq">
+          <div class="ei"><img src="${flag(p.flag_l)}" alt="">${p.local}</div>
+          <span style="color:var(--muted);font-size:.9rem">vs</span>
+          <div class="ei"><img src="${flag(p.flag_v)}" alt="">${p.visita}</div>
+        </div>
+        <div class="pmeta"><span>${p.fecha ? new Date(p.fecha).toLocaleDateString('es-UY',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : ''}</span>
+          <span class="best ${bloq?'bfin':'bpend'}">${bloq?'Finalizado':'Pendiente'}</span></div>
+        ${info}</div>`;
+    }).join('');
+
+    el.innerHTML = `
+      <div class="ptit">Predicciones</div>
+      <div class="psub">Seleccioná un partido para ingresar tu predicción</div>
+      <div class="fase-tabs">${faseTabs}</div>
+      ${grupoTabsH}
+      <div class="pgrid">${cards || '<p style="color:var(--muted)">No hay partidos en esta sección.</p>'}</div>`;
+
+    el.querySelectorAll('.fase-tab').forEach(t => t.addEventListener('click', () => {
+      faseActiva = t.dataset.fase; renderPred();
+    }));
+    el.querySelectorAll('.gt').forEach(t => t.addEventListener('click', () => {
+      grupoActivo = t.dataset.grupo; renderPred();
+    }));
+    el.querySelectorAll('.pc[data-pid]').forEach(c => {
+      const pid = parseInt(c.dataset.pid);
+      if (!pid) return;
+      c.addEventListener('click', () => abrirModal(pid));
+    });
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+function abrirModal(pid) {
+  const p = fixture.find(f => f.id === pid);
+  if (!p) return;
+  partidoActivo = p;
+  document.getElementById('m-tit').textContent = p.fase;
+  document.getElementById('m-fecha').textContent = p.fecha ? new Date(p.fecha).toLocaleString('es-UY') : '';
+  document.getElementById('m-fl').src = flagBig(p.flag_l);
+  document.getElementById('m-fv').src = flagBig(p.flag_v);
+  document.getElementById('m-local').textContent = p.local;
+  document.getElementById('m-visita').textContent = p.visita;
+  const pr = p.miPred;
+  document.getElementById('m-gl').value = pr ? (pr.gl ?? pr.goles_l) : 0;
+  document.getElementById('m-gv').value = pr ? (pr.gv ?? pr.goles_v) : 0;
+  document.getElementById('modal').classList.add('on');
+}
+
+async function guardarPred() {
+  const p = partidoActivo;
+  if (!p) return;
+  const gl = parseInt(document.getElementById('m-gl').value);
+  const gv = parseInt(document.getElementById('m-gv').value);
+  if (isNaN(gl) || isNaN(gv) || gl < 0 || gv < 0) { toast('Marcador inválido', 'err'); return; }
+  try {
+    await api('POST', '/api/predicciones', { partido_id: p.id, goles_l: gl, goles_v: gv });
+    toast('Predicción guardada ✓');
+    document.getElementById('modal').classList.remove('on');
+    fixture = await api('GET', '/api/fixture');
+    renderPred();
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+// ── HISTORIAL ─────────────────────────────────────────────────
+async function renderHistorial() {
+  const el = document.getElementById('v-historial');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    const hist = await api('GET', '/api/historial/' + sesion.id);
+    if (!hist.length) { el.innerHTML = '<div class="ptit">Mi historial</div><div class="psub">Sin resultados aún.</div>'; return; }
+    const rows = hist.map(p => {
+      const pr = p.pred_l !== null ? {gl: p.pred_l, gv: p.pred_v} : null;
+      const pts = calcPts(pr, p.real_l, p.real_v, p.fase);
+      const cls = pts === null ? '' : pts > 1 ? 'pex' : pts === 1 ? 'pgan' : 'perr';
+      return `<tr>
+        <td><img src="${flag(p.flag_l)}" style="width:22px;border-radius:2px;margin-right:5px">${p.local}</td>
+        <td><img src="${flag(p.flag_v)}" style="width:22px;border-radius:2px;margin-right:5px">${p.visita}</td>
+        <td>${p.real_l}-${p.real_v}</td>
+        <td>${pr ? pr.gl+'-'+pr.gv : '<span style="color:var(--muted)">—</span>'}</td>
+        <td class="${cls}" style="font-weight:bold">${pts !== null ? pts : '—'}</td>
+        <td><span class="fase-badge">${p.fase}</span></td></tr>`;
+    }).join('');
+    el.innerHTML = `<div class="ptit">Mi historial</div><div class="psub">Partidos finalizados</div>
+      <div class="card"><table>
+        <thead><tr><th>Local</th><th>Visitante</th><th>Resultado</th><th>Mi pred</th><th>Pts</th><th>Fase</th></tr></thead>
+        <tbody>${rows}</tbody></table></div>`;
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+// ── POSICIONES ────────────────────────────────────────────────
+async function renderPos() {
+  const el = document.getElementById('v-pos');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    const ranking = await api('GET', '/api/ranking');
+    const rows = ranking.map((r,i) => {
+      const cls = i===0?'r1':i===1?'r2':i===2?'r3':'';
+      const vos = r.id === sesion.id ? ' <span style="color:var(--dorado);font-size:.72rem">(vos)</span>' : '';
+      return `<tr class="${cls}"><td style="font-weight:bold">${i+1}</td><td>${r.nombre}${vos}</td>
+        <td style="color:var(--dorado);font-weight:bold">${r.pts}</td>
+        <td>${r.pts_pred}</td><td>${r.pts_bonus}</td>
+        <td>${r.exactos}</td><td>${r.participacion}%</td></tr>`;
+    }).join('');
+    el.innerHTML = `<div class="ptit">Tabla de posiciones</div><div class="psub">Ranking general</div>
+      <div class="card"><table>
+        <thead><tr><th>Pos</th><th>Jugador</th><th>Total</th><th>Predicciones</th><th>Bonus</th><th>Exactos</th><th>Participación</th></tr></thead>
+        <tbody>${rows}</tbody></table></div>`;
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+// ── BONUS ─────────────────────────────────────────────────────
+async function renderBonus() {
+  const el = document.getElementById('v-bonus');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    const { respuestas, resultados } = await api('GET', '/api/bonus');
+    const cards = BONUS_ITEMS.map(item => {
+      const val = respuestas[item.k] || '';
+      const res = resultados[item.k] || '';
+      const acierto = val && res && val.toLowerCase() === res.toLowerCase();
+      return `<div class="bcard">
+        <div class="bi">${item.icon}</div>
+        <div class="binfo"><div class="btit">${item.t}</div>
+          <div class="bpts">Vale ${item.pts} pts${res ? ` · Respuesta: <strong>${res}</strong>` : ''}</div></div>
+        <input class="binput" type="text" data-k="${item.k}" value="${val}" placeholder="Tu predicción...">
+        ${acierto ? '<span style="color:var(--verde);font-size:.8rem">✓</span>' : ''}</div>`;
+    }).join('');
+    el.innerHTML = `<div class="ptit">Predicciones Bonus</div><div class="psub">Predice premios del torneo</div>
+      <div class="card">${cards}
+      <button class="btn" style="margin-top:8px" id="btn-guardar-bonus">Guardar bonus</button></div>`;
+    document.getElementById('btn-guardar-bonus').addEventListener('click', async () => {
+      const inputs = el.querySelectorAll('.binput');
+      for (const inp of inputs) {
+        const k = inp.dataset.k, v = inp.value.trim();
+        if (v) await api('POST', '/api/bonus', { tipo: k, valor: v });
+      }
+      toast('Bonus guardados ✓'); renderBonus();
+    });
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  ADMIN VISTAS
+// ══════════════════════════════════════════════════════════════
+
+// ── ADMIN: CARGAR RESULTADOS ──────────────────────────────────
+async function renderARes() {
+  const el = document.getElementById('v-ares');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    fixture = await api('GET', '/api/fixture');
+    const fasesDisp = ['Grupos','Ronda de 32','Octavos','Cuartos','Semifinales','Final'];
+    const faseTabs = fasesDisp.map(f =>
+      `<div class="fase-tab${f===faseActiva?' on':''}" data-fase="${f}">${f}</div>`).join('');
+
+    let grupoTabsH = '';
+    if (faseActiva === 'Grupos') {
+      grupoTabsH = `<div class="gtabs">${GRUPOS.map(l =>
+        `<div class="gt${l===grupoActivo?' on':''}" data-grupo="${l}">${l}</div>`).join('')}</div>`;
+    }
+
+    const partidos = fixture.filter(p => {
+      if (p.fase !== faseActiva) return false;
+      if (faseActiva === 'Grupos') return p.grupo === grupoActivo;
+      return true;
+    });
+
+    const rows = partidos.map(p => `
+      <tr>
+        <td>${p.local}</td><td>${p.visita}</td>
+        <td>${p.estado === 'FINALIZADO' ? `${p.real_l}-${p.real_v}` : '—'}</td>
+        <td>
+          ${p.estado !== 'FINALIZADO' && p.local !== 'A definir' ? `
+            <input type="number" min="0" max="20" style="width:50px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:5px;color:var(--txt);padding:4px 6px;text-align:center" class="res-l" data-pid="${p.id}" value="0">
+            <span style="color:var(--muted)"> - </span>
+            <input type="number" min="0" max="20" style="width:50px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:5px;color:var(--txt);padding:4px 6px;text-align:center" class="res-v" data-pid="${p.id}" value="0">
+            <button class="btn btn-s" style="margin-left:8px" data-pid="${p.id}" id="btn-res-${p.id}">Confirmar</button>
+          ` : `<span class="best bfin">${p.estado === 'FINALIZADO' ? 'Finalizado' : 'A definir'}</span>`}
+        </td></tr>`).join('');
+
+    el.innerHTML = `<div class="ptit">Cargar resultados</div><div class="psub">Ingresá el resultado de cada partido</div>
+      <div class="fase-tabs">${faseTabs}</div>${grupoTabsH}
+      <div class="card"><table>
+        <thead><tr><th>Local</th><th>Visitante</th><th>Resultado</th><th>Acción</th></tr></thead>
+        <tbody>${rows}</tbody></table></div>`;
+
+    el.querySelectorAll('.fase-tab').forEach(t => t.addEventListener('click', () => { faseActiva = t.dataset.fase; renderARes(); }));
+    el.querySelectorAll('.gt').forEach(t => t.addEventListener('click', () => { grupoActivo = t.dataset.grupo; renderARes(); }));
+
+    partidos.filter(p => p.estado !== 'FINALIZADO' && p.local !== 'A definir').forEach(p => {
+      const btn = document.getElementById('btn-res-' + p.id);
+      if (!btn) return;
+      btn.addEventListener('click', async () => {
+        const rl = parseInt(el.querySelector(`.res-l[data-pid="${p.id}"]`).value);
+        const rv = parseInt(el.querySelector(`.res-v[data-pid="${p.id}"]`).value);
+        if (isNaN(rl)||isNaN(rv)) { toast('Marcador inválido','err'); return; }
+        try {
+          await api('PUT', '/api/admin/partidos/' + p.id, { real_l: rl, real_v: rv });
+          toast('Resultado guardado ✓'); renderARes();
+        } catch(e) { toast(e.message,'err'); }
+      });
+    });
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+// ── ADMIN: ELIMINATORIAS ─────────────────────────────────────
+async function renderAElim() {
+  const el = document.getElementById('v-aelim');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    fixture = await api('GET', '/api/fixture');
+    const fases = ['Ronda de 32','Octavos','Cuartos','Semifinales','Final'];
+    const secciones = fases.map(fase => {
+      const partidos = fixture.filter(p => p.fase === fase && p.local === 'A definir');
+      if (!partidos.length) return '';
+      const cards = partidos.map(p => `
+        <div class="elim-partido">
+          <h4>${p.fase} – Partido #${p.id}</h4>
+          <input class="elim-select" placeholder="Equipo Local" data-pid="${p.id}" data-side="local" type="text" value="">
+          <input class="elim-select" placeholder="Equipo Visitante" data-pid="${p.id}" data-side="visita" type="text" value="">
+          <button class="btn btn-s" data-pid="${p.id}">Asignar equipos</button>
+        </div>`).join('');
+      return `<div class="card"><div class="ctit">${fase}</div>${cards}</div>`;
+    }).join('');
+    el.innerHTML = `<div class="ptit">Eliminatorias</div><div class="psub">Asigna los equipos a los partidos eliminatorios</div>${secciones || '<p style="color:var(--muted)">Todos los equipos ya están asignados.</p>'}`;
+
+    el.querySelectorAll('.elim-partido .btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const pid = btn.dataset.pid;
+        const local  = el.querySelector(`input[data-pid="${pid}"][data-side="local"]`).value.trim();
+        const visita = el.querySelector(`input[data-pid="${pid}"][data-side="visita"]`).value.trim();
+        if (!local || !visita) { toast('Ingresá ambos equipos','err'); return; }
+        try {
+          await api('PUT', '/api/admin/partidos/'+pid+'/equipos', { local, flag_l:'un', visita, flag_v:'un' });
+          toast('Equipos asignados ✓'); renderAElim();
+        } catch(e) { toast(e.message,'err'); }
+      });
+    });
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+// ── ADMIN: BONUS ──────────────────────────────────────────────
+async function renderABon() {
+  const el = document.getElementById('v-abon');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    const { resultados } = await api('GET', '/api/bonus');
+    const cards = BONUS_ITEMS.map(item => `
+      <div class="bcard">
+        <div class="bi">${item.icon}</div>
+        <div class="binfo"><div class="btit">${item.t}</div><div class="bpts">Vale ${item.pts} pts</div></div>
+        <input class="binput" type="text" data-k="${item.k}" value="${resultados[item.k]||''}" placeholder="Respuesta correcta...">
+      </div>`).join('');
+    el.innerHTML = `<div class="ptit">Resolver Bonus</div><div class="psub">Ingresá las respuestas correctas del torneo</div>
+      <div class="card">${cards}<button class="btn" style="margin-top:8px" id="btn-save-abon">Guardar respuestas</button></div>`;
+    document.getElementById('btn-save-abon').addEventListener('click', async () => {
+      for (const inp of el.querySelectorAll('.binput')) {
+        await api('PUT', '/api/admin/bonus', { tipo: inp.dataset.k, valor: inp.value.trim() });
+      }
+      toast('Bonus actualizados ✓');
+    });
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+// ── ADMIN: POSICIONES ─────────────────────────────────────────
+async function renderAPos() {
+  const el = document.getElementById('v-apos');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    const ranking = await api('GET', '/api/ranking');
+    const rows = ranking.map((r,i) => {
+      const cls = i===0?'r1':i===1?'r2':i===2?'r3':'';
+      return `<tr class="${cls}"><td style="font-weight:bold">${i+1}</td><td>${r.nombre}</td><td style="color:var(--muted);font-size:.8rem">@${r.alias}</td>
+        <td style="color:var(--dorado);font-weight:bold">${r.pts}</td>
+        <td>${r.pts_pred}</td><td>${r.pts_bonus}</td><td>${r.exactos}</td><td>${r.participacion}%</td></tr>`;
+    }).join('');
+    el.innerHTML = `<div class="ptit">Posiciones</div><div class="psub">Ranking completo de la penca</div>
+      <div class="card"><table>
+        <thead><tr><th>Pos</th><th>Nombre</th><th>Alias</th><th>Total</th><th>Preds</th><th>Bonus</th><th>Exactos</th><th>Part.</th></tr></thead>
+        <tbody>${rows}</tbody></table></div>`;
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+// ── ADMIN: USUARIOS ───────────────────────────────────────────
+async function renderAUsr() {
+  const el = document.getElementById('v-ausr');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    const usuarios = await api('GET', '/api/admin/usuarios');
+    const rows = usuarios.map(u => `
+      <div class="user-row">
+        <div><div class="user-nombre">${u.nombre}</div><div class="user-alias">@${u.alias} · ${u.rol==='A'?'Admin':'Jugador'}</div></div>
+        ${u.rol !== 'A' ? `<button class="btn btn-r btn-s" data-del="${u.id}">Eliminar</button>` : ''}
+      </div>`).join('');
+    el.innerHTML = `<div class="ptit">Participantes</div><div class="psub">Gestión de jugadores de la penca</div>
+      <button class="btn" style="width:auto;padding:10px 28px;margin-bottom:16px" id="btn-nuevo-usr">+ Agregar participante</button>
+      <div class="card">${rows}</div>`;
+
+    document.getElementById('btn-nuevo-usr').addEventListener('click', () => {
+      ['nu-nombre','nu-alias','nu-pass'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('modal-usr').classList.add('on');
+    });
+    el.querySelectorAll('[data-del]').forEach(btn => btn.addEventListener('click', async () => {
+      if (!confirm('¿Eliminar este participante?')) return;
+      try {
+        await api('DELETE', '/api/admin/usuarios/' + btn.dataset.del);
+        toast('Participante eliminado'); renderAUsr();
+      } catch(e) { toast(e.message,'err'); }
+    }));
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+async function guardarUsr() {
+  const nombre = document.getElementById('nu-nombre').value.trim();
+  const alias  = document.getElementById('nu-alias').value.trim().toLowerCase();
+  const pass   = document.getElementById('nu-pass').value;
+  if (!nombre||!alias||!pass) { toast('Completa todos los campos','err'); return; }
+  try {
+    await api('POST', '/api/admin/usuarios', { alias, nombre, password: pass });
+    document.getElementById('modal-usr').classList.remove('on');
+    toast('Participante ' + alias + ' agregado correctamente');
+    renderAUsr();
+  } catch(e) { toast(e.message,'err'); }
+}
+
+// ── ADMIN: ESTADO GENERAL ─────────────────────────────────────
+async function renderAStat() {
+  const el = document.getElementById('v-astat');
+  el.innerHTML = '<div class="loading">Cargando…</div>';
+  try {
+    const [stats, ranking] = await Promise.all([
+      api('GET', '/api/admin/stats'),
+      api('GET', '/api/ranking')
+    ]);
+    const faseRows = stats.faseStats.map(f => `
+      <div class="desglose-row">
+        <span>${f.fase}</span>
+        <span style="color:var(--muted);font-size:.8rem">${f.jugados} / ${f.total} jugados</span>
+        <div class="progress-bar" style="width:120px;display:inline-block;vertical-align:middle;margin:0 8px">
+          <div class="progress-fill" style="width:${f.total>0?Math.round(f.jugados/f.total*100):0}%"></div></div>
+        <span style="font-size:.8rem;color:var(--dorado)">${f.total>0?Math.round(f.jugados/f.total*100):0}%</span>
+      </div>`).join('');
+
+    const proxRows = fixture.filter(p => p.estado==='PENDIENTE' && p.local!=='A definir').slice(0,5).map(p =>
+      `<tr><td>#${p.id}</td><td>${p.local}</td><td>${p.visita}</td><td><span class="fase-badge">${p.fase}</span></td></tr>`).join('');
+
+    el.innerHTML = `<div class="ptit">Estado general</div><div class="psub">Resumen del torneo y la penca</div>
+      <div class="g4" style="margin-bottom:16px">
+        <div class="sbox"><div class="snum">${stats.jugados}</div><div class="slbl">Partidos jugados</div></div>
+        <div class="sbox"><div class="snum">${stats.pendientes}</div><div class="slbl">Pendientes</div></div>
+        <div class="sbox"><div class="snum">${stats.jugadores}</div><div class="slbl">Participantes</div></div>
+        <div class="sbox"><div class="snum">${stats.totalPreds}</div><div class="slbl">Predicciones cargadas</div></div>
+      </div>
+      <div class="g2">
+        <div class="card"><div class="ctit">Avance por fase</div>${faseRows}</div>
+        <div class="card"><div class="ctit">Próximos partidos</div>
+          <table><thead><tr><th>ID</th><th>Local</th><th>Visitante</th><th>Fase</th></tr></thead><tbody>${proxRows}</tbody></table></div>
+      </div>
+      <div class="card"><div class="ctit">Líder actual</div>
+        ${ranking[0]?`<div style="font-size:1.4rem;font-weight:bold;color:var(--dorado)">${ranking[0].nombre} &nbsp; ${ranking[0].pts} pts</div>`:'<p style="color:var(--muted)">Sin datos aún</p>'}
+      </div>`;
+  } catch(e) { el.innerHTML = `<p style="color:var(--rojo)">${e.message}</p>`; }
+}
+
+// ── EVENTOS ───────────────────────────────────────────────────
+document.getElementById('btn-login').addEventListener('click', doLogin);
+document.getElementById('l-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('l-alias').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('l-pass').focus(); });
+document.getElementById('btn-salir-j').addEventListener('click', doLogout);
+document.getElementById('btn-salir-a').addEventListener('click', doLogout);
+document.getElementById('btn-cancelar').addEventListener('click', () => document.getElementById('modal').classList.remove('on'));
+document.getElementById('btn-guardar').addEventListener('click', guardarPred);
+document.getElementById('btn-cancelar-usr').addEventListener('click', () => document.getElementById('modal-usr').classList.remove('on'));
+document.getElementById('btn-guardar-usr').addEventListener('click', guardarUsr);
+
+document.querySelectorAll('#app-j .nlinks a[data-vista]').forEach(a =>
+  a.addEventListener('click', () => showVistaJ(a.dataset.vista)));
+document.querySelectorAll('#app-a .nlinks a[data-avista]').forEach(a =>
+  a.addEventListener('click', () => showVistaA(a.dataset.avista)));
+
+// ── CHECK SESSION AL CARGAR ───────────────────────────────────
+(async () => {
+  try {
+    const u = await api('GET', '/api/auth/me');
+    sesion = u;
+    fixture = await api('GET', '/api/fixture');
+    if (u.rol === 'A') {
+      document.getElementById('a-nombre').textContent = u.nombre;
+      showPant('app-a'); showVistaA('ares');
+    } else {
+      document.getElementById('j-nombre').textContent = u.nombre;
+      showPant('app-j'); showVistaJ('dash');
+    }
+  } catch(_) { /* no hay sesión, mostrar login */ }
+})();
+</script>
+</body>
+</html>
