@@ -2,7 +2,7 @@ Integrantes del grupo:
 Agustín Opizzo, Francisco Sury y Joaquín Paschetta
 
 ------------------------------------------------------
-Resumen como hacer andar:
+Resumen como hacer andar:<br />
 1-
 Hacer andar MySQL local (XAMPP u otro)
 instalar node.js
