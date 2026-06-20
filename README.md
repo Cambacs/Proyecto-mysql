@@ -5,7 +5,7 @@ Agustín Opizzo, Francisco Sury y Joaquín Paschetta<br />
 Resumen como hacer andar:<br />
 1-<br />
 instalar node.js<br />
-Hacer andar un MySQL local (Usando XAMPP u otra forma)<br />
+Hacer andar un MySQL (Usando XAMPP u otra forma)<br />
 
 2-<br />
 En un command prompt:<br />
